@@ -1,0 +1,183 @@
+<style>
+  .dropzone .dz-preview .dz-image img {
+    width: 100px !important;
+  }
+
+  .dropzone .dz-preview:not(.dz-processing) .dz-progress {
+    margin-top: 25px !important;
+  }
+
+  .dropzone .dz-preview.dz-file-preview .dz-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+<div class="container">
+  <h2>Bulk Book Upload</h2>
+  <hr />
+  <h2>Step:1 Upload Images</h2>
+  <div id="image-dropzone" class="dropzone"></div>
+  <div class="row">
+    <div class="col-md-6">
+      <button
+        class="btn btn-primary"
+        onclick="bulkUploadImage()"
+        style="margin-bottom: 10px; margin-top: 12px"
+      >
+        Upload Images
+      </button>
+    </div>
+  </div>
+  <hr />
+  <h2>Step:2 Upload PDF</h2>
+  <div id="file-dropzone" class="dropzone"></div>
+  <div class="row">
+    <div class="col-md-6">
+      <button
+        class="btn btn-primary"
+        onclick="bulkUploadPDF()"
+        style="margin-bottom: 10px; margin-top: 12px"
+      >
+        Upload PDFs
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="upload-form">
+    <h2>Step:3 Upload CSV File</h2>
+    <div class="form-group">
+      <label for="csvFile">Choose CSV File</label>
+      <input
+        type="file"
+        class="form-control-file"
+        id="csvFile"
+        name="csvFile"
+        accept=".csv"
+      />
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      style="margin-bottom: 20px"
+      onclick="uploadCSV()"
+    >
+      Upload CSV File
+    </button>
+  </div>
+</div>
+<script src="js/bulkUpload.js"></script>
+<script>
+  // Disable auto discover for all elements:
+  Dropzone.autoDiscover = false;
+
+  // jQuery document ready for safe script execution
+
+  // This initializes the Dropzone instance
+  var myDropzone = new Dropzone("#image-dropzone", {
+    url: "/bulk/upload/image",
+    autoProcessQueue: false, // Prevents Dropzone from automatically uploading files
+    uploadMultiple: true,
+    parallelUploads: 100, // Adjust if needed
+    maxFiles: 100,
+    maxFilesize: 2, // MB
+    acceptedFiles: "image/*",
+    addRemoveLinks: true,
+    dictRemoveFile: "Remove",
+  });
+
+  // Listen to events
+  myDropzone.on("sendingmultiple", function (file, xhr, formData) {
+    xhr.setRequestHeader("access-token", headers["access-token"]);
+    xhr.setRequestHeader("device-type", headers["device-type"]);
+    xhr.setRequestHeader("device-token", headers["device-token"]);
+  });
+
+  myDropzone.on("successmultiple", function (files, data) {
+    toastr.success(data.data.message);
+    myDropzone.removeAllFiles();
+  });
+
+  myDropzone.on("error", function (files, response) {
+    console.log("Failed to upload: ", response);
+    // Handle the error
+  });
+
+  function bulkUploadImage() {
+    myDropzone.processQueue(); // Process all files in the queue
+  }
+
+  //pdf
+
+  var myFileDropzone = new Dropzone("#file-dropzone", {
+    url: "/bulk/upload/file",
+    autoProcessQueue: false, // Prevents Dropzone from automatically uploading files
+    uploadMultiple: true,
+    parallelUploads: 100, // Adjust if needed
+    maxFiles: 100,
+    maxFilesize: 200, // MB
+    acceptedFiles: "application/pdf",
+    addRemoveLinks: true,
+    dictRemoveFile: "Remove",
+    // previewTemplate: previewTemplate,
+  });
+
+  // Listen to events
+  myFileDropzone.on("sendingmultiple", function (file, xhr, formData) {
+    xhr.setRequestHeader("access-token", headers["access-token"]);
+    xhr.setRequestHeader("device-type", headers["device-type"]);
+    xhr.setRequestHeader("device-token", headers["device-token"]);
+  });
+
+  myFileDropzone.on("successmultiple", function (files, data) {
+    myFileDropzone.removeAllFiles();
+    toastr.success(data.data.message);
+  });
+
+  myFileDropzone.on("error", function (files, response) {
+    console.log("Failed to upload: ", response);
+    // Handle the error
+  });
+
+  myFileDropzone.on("addedfile", function (file) {
+    $(file.previewElement).find(".dz-image img").attr("src", "/images/pdf.png");
+  });
+
+  function bulkUploadPDF() {
+    myFileDropzone.processQueue(); // Process all files in the queue
+  }
+
+  function uploadCSV() {
+    const fileData = new FormData(); // Create a FormData object to send image data
+    console.log(headers);
+    // Append the image file from the input field to the FormData object
+    fileData.append("file", $("#csvFile")[0].files[0]);
+    // Make the AJAX request to update the image
+    $.ajax({
+      url: "/bulk/upload/csv",
+      type: "POST",
+      headers: headers,
+      processData: false,
+      contentType: false,
+      crossDomain: true,
+      data: fileData,
+      success: function (data) {
+        console.log(data);
+        // Handle success response if needed
+        console.log("CSV updated successfully.", data);
+        // Close the modal or perform any other action upon successful image update
+        toastr.success(data.data.message);
+        $("#csvFile").val("");
+      },
+      error: function (xhr, status, error) {
+        console.error("Error updating image:", error);
+        // Optionally display an error message to the user
+        alert(
+          "An error occurred while updating the image. Please try again later."
+        );
+      },
+    });
+  }
+</script>

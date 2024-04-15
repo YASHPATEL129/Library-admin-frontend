@@ -1,0 +1,85 @@
+<div>
+  <h2>Create Category</h2>
+  <div class="row category-form">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        id="categoryName"
+        placeholder="Category Name"
+        required
+      />
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-primary" onclick="createCategory()">Create</button>
+    </div>
+  </div>
+
+  <h2 style="margin-top: 20px">Categories</h2>
+  <table class="table" id="categoryTable" border="1">
+    <thead>
+      <tr>
+        <th>Category ID</th>
+        <th>Category Name</th>
+        <th>Created By</th>
+        <th>Modified By</th>
+        <th>Delete</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody id="categoryTableBody">
+      <!-- Categories will be dynamically populated here -->
+    </tbody>
+  </table>
+
+  <!-- Edit Category Modal -->
+  <div
+    class="modal fade"
+    id="editCategoryModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editCategoryModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="hidden" id="editCategoryId" value="1" />
+            <label for="editCategoryName">Category Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editCategoryName"
+              placeholder="Enter category name"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            id="edit-close-button"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="saveEditedCategory()"
+          >
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/category.js"></script>
+<script>
+  fetchAndPopulateCategories();
+</script>

@@ -1,0 +1,104 @@
+<div class="admin-body">
+  <div class="row">
+    <div class="col-6">
+      <h2>Super Admins</h2>
+    </div>
+    <div class="col-6 text-right">
+      <button
+        type="button"
+        class="btn btn-primary"
+        style="margin-top: 15px"
+        onclick="openCreateAdminModal()"
+      >
+        Create Super Admin / Admin
+      </button>
+    </div>
+  </div>
+
+  <table class="table" id="superAdminTable" border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Created By</th>
+      </tr>
+    </thead>
+    <tbody id="superAdminTableBody">
+      <!-- Categories will be dynamically populated here -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="createAdminModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="createAdminModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createAdminModalLabel">
+          Create Super Admin / Admin
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form to collect user input -->
+        <form id="createAdminForm">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="contact">Contact</label>
+            <input type="text" class="form-control" id="contact" required />
+          </div>
+          <div class="form-group">
+            <label for="isSuperAdmin">Is Super Admin?</label>
+            <select class="form-control" id="isSuperAdmin">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/superAdmin.js"></script>
+<script>
+  fetchSuperAdminList(true);
+</script>

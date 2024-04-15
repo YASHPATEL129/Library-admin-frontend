@@ -1,0 +1,254 @@
+<h1>Books</h1>
+<table class="table" id="booksTable" border="1">
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Prime</th>
+      <th>Pages</th>
+      <th>Publisher</th>
+      <th>Author</th>
+      <th>ISBN</th>
+      <th>Created By</th>
+      <th>Created Date</th>
+      <th>Modified By</th>
+      <th>Modified Date</th>
+      <th>Deleted</th>
+      <th>Deleted Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="booksTableBody">
+    <!-- Categories will be dynamically populated here -->
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="pdfCoverModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="pdfCoverModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfCoverModalLabel">PDF & Cover View</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Placeholder for cover image content -->
+        <img
+          id="coverImage"
+          src=""
+          alt="Cover Image"
+          style="max-width: 100%; height: auto; display: block; margin: auto"
+        />
+
+        <!-- Placeholder for PDF content -->
+        <div id="pdfviewer">
+          <div id="filename"></div>
+          <iframe
+            id="pdfIframe"
+            width="60%"
+            height="600px"
+            frameborder="0"
+          ></iframe>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Book Modal -->
+<div
+  class="modal fade"
+  id="editBookModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editBookModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editBookModalLabel">Edit Book</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Input fields for editing book details -->
+        <div class="form-group">
+          <input type="hidden" id="editBookId" value="1" />
+          <label for="editTitle">Title</label>
+          <input type="text" class="form-control" id="editTitle" />
+        </div>
+        <div class="form-group">
+          <label for="editDescription">Description</label>
+          <textarea
+            class="form-control"
+            id="editDescription"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="editISBN">ISBN</label>
+          <input type="text" class="form-control" id="editISBN" />
+        </div>
+        <div class="form-group">
+          <label for="editPublisher">Publisher</label>
+          <input type="text" class="form-control" id="editPublisher" />
+        </div>
+        <div class="form-group">
+          <label for="editAuthor">Author</label>
+          <input type="text" class="form-control" id="editAuthor" />
+        </div>
+        <div class="form-group">
+          <label for="editCategory">Category</label>
+          <select
+            class="form-control"
+            id="editCategory"
+            name="category"
+            style="width: 100%"
+          ></select>
+        </div>
+        <div class="form-group">
+          <label for="editPages">Pages</label>
+          <input type="number" class="form-control" id="editPages" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="saveBookChanges()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML structure -->
+<div
+  class="modal fade"
+  id="editImageModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editImageModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editImageModalLabel">Edit Image</h5>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="modal-title">Edit Image - <span id="coverName"></span></h6>
+        <input
+          type="file"
+          id="imageUpload"
+          name="imageUpload"
+          accept="image/*"
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <!-- Add a Save button or any other action buttons if needed -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="saveImageChanges()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML structure -->
+<div
+  class="modal fade"
+  id="editPdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editPdfModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPdfModalLabel">Edit File</h5>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="modal-title">Edit PDF - <span id="pdf"></span></h6>
+        <input type="file" id="pdfUpload" name="pdfUpload" accept=".pdf" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <!-- Add a Save button or any other action buttons if needed -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="savePdfChanges()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/books.js"></script>
+<script>
+  fetchBooks();
+</script>
