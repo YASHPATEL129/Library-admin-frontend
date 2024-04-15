@@ -47,7 +47,7 @@ function fetchAndPopulateCategories() {
             },
           ],
           // ordering: false,
-          // scrollX: true, // Enable horizontal scrolling
+          //     scrollX: true, // Enable horizontal scrolling
           scrollY: "300px", // Enable vertical scrolling with a height of 300 pixels
           scrollCollapse: true, // Enable collapsing the table when vertical scroll is active
           searching: false,
